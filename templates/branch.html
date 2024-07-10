@@ -1,0 +1,44 @@
+{% extends 'inner-page.html' %}
+{% load static %}
+{% block body %}
+ <br><br>
+
+        <h1>BRANCH FORM</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+
+            <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" name="name" id="name" placeholder="name" required="required">
+
+
+        <br><br>
+
+
+            <label for="location" class="form-label">Location</label>
+        <input type="text" class="form-control" name="location" id="location" placeholder="enter location" required="required">
+
+
+        <br><br>
+
+
+            <label for="manager" class="form-label">Manager</label>
+        <input type="text" class="form-control" name="manager" id="manager"  required="required">
+
+
+        <br><br>
+
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="input email"  required="required">
+
+        <br><br>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+
+
+
+
+
+{% endblock %}
