@@ -51,10 +51,22 @@ def appointment(request):
                       phone=request.POST['phone'],
                       date=request.POST['date'],
                       department=request.POST['department'],
-                      doctor=request.POST['doctor']
+                      doctor=request.POST['doctor'],
+                      message=request.POST['message']
                       )
         myappointment.save()
         return redirect('/appointment')
     else:
         return render(request,'appointment.html')
 
+
+
+
+def show(request):
+    information = Appointment.objects.all()
+    return render(request, 'show.html', {'data':information})
+
+def delete(request, id):
+    myappointment = Appointment.objects.get(id=id)
+    myappointment.delete()
+    return redirect('/show')
