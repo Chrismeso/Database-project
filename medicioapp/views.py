@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from medicioapp.models import Contact
 from  medicioapp.models import Branch
 from medicioapp.models import Appointment
+from medicioapp.forms import AppointmentForm
 # Create your views here.
 
 def index(request):
@@ -55,7 +56,7 @@ def appointment(request):
                       message=request.POST['message']
                       )
         myappointment.save()
-        return redirect('/appointment')
+        return redirect('/show')
     else:
         return render(request,'appointment.html')
 
@@ -70,3 +71,24 @@ def delete(request, id):
     myappointment = Appointment.objects.get(id=id)
     myappointment.delete()
     return redirect('/show')
+def edit(request, id):
+    appointment = Appointment.objects.get(id=id)
+    return render(request, 'edit.html', {'x':appointment})
+
+def update(request, id):
+    if request.method == 'POST':
+        appointment = Appointment.objects.get(id=id)
+        form = AppointmentForm(request.POST, instance=appointment)
+        if form.is_valid():
+            form.save()
+            return redirect('/show')
+        else:
+            return render(request, 'edit.html')
+    else:
+        return render(request, 'edit.html')
+
+
+def register(request):
+    return render(request, 'register.html')
+def login(request):
+    return render(request, 'login.html')
