@@ -3,13 +3,26 @@ from medicioapp.models import Contact
 from  medicioapp.models import Branch
 from medicioapp.models import Appointment
 from medicioapp.forms import AppointmentForm
+from medicioapp.models import Member
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    if request.method == 'POST':
+        if Member.objects.filter(username=request.POST['username'],
+                                 password=request.POST['password']
+                                 ).exists():
+            members = Member.objects.get(
+                username=request.POST['username'],
+                password=request.POST['password']
+            )
+            return render(request, 'index.html', {'member': members})
+        else:
+            return render(request, 'login.html')
+    else:
+        return render(request, 'login.html')
 
 def inner(request):
-    return render(request, 'inner-page.html')
+   return render(request,'inner-page.html')
 def about(request):
     return render(request, 'about.html')
 def doctors(request):
@@ -18,7 +31,9 @@ def doctors(request):
 def departments(request):
     return render(request, 'departments.html')
 def home(request):
-    return render(request, 'home.html')
+    return render(request,'home.html')
+
+
 def services(request):
     return render(request, 'services.html')
 def contacts(request):
@@ -47,7 +62,8 @@ def branch(request):
 
 def appointment(request):
     if request.method == 'POST':
-        myappointment = Appointment(name=request.POST['name'],
+        myappointment = Appointment(
+                    name=request.POST['name'],
                       email=request.POST['email'],
                       phone=request.POST['phone'],
                       date=request.POST['date'],
@@ -89,6 +105,15 @@ def update(request, id):
 
 
 def register(request):
-    return render(request, 'register.html')
+    if request.method == 'POST':
+        members = Member(name=request.POST['name'],
+                         username=request.POST['username'],
+                         password=request.POST['password'],)
+        members.save()
+        return redirect('/login')
+    else:
+        return render(request, 'register.html')
+
+
 def login(request):
     return render(request, 'login.html')
