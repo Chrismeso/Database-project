@@ -2,16 +2,17 @@ from django.shortcuts import render,redirect
 from medicioapp.models import Contact
 from  medicioapp.models import Branch
 from medicioapp.models import Appointment
-from medicioapp.forms import AppointmentForm
-from medicioapp.models import User
+from medicioapp.forms import AppointmentForm, ImageUploadForm
+from medicioapp.models import Member
+from medicioapp.models import ImageModel
 # Create your views here.
 
 def index(request):
     if request.method == 'POST':
-        if User.objects.filter(username=request.POST['username'],
+        if Member.objects.filter(username=request.POST['username'],
                                  password=request.POST['password']
                                  ).exists():
-            members = User.objects.get(
+            members = Member.objects.get(
                 username=request.POST['username'],
                 password=request.POST['password']
             )
@@ -106,7 +107,7 @@ def update(request, id):
 
 def register(request):
     if request.method == 'POST':
-        members = User(name=request.POST['name'],
+        members = Member(name=request.POST['name'],
                          username=request.POST['username'],
                          password=request.POST['password'],)
         members.save()
@@ -117,3 +118,20 @@ def register(request):
 
 def login(request):
     return render(request, 'login.html')
+def upload_image(request):
+    if request.method == 'POST':
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/showimage')
+    else:
+        form = ImageUploadForm()
+    return render(request, 'upload image.html', {'form': form})
+def show_image(request):
+    images = ImageModel.objects.all()
+    return render(request, 'showimage.html', {'images': images})
+
+def imagedelete(request, id):
+    image = ImageModel.objects.get(id=id)
+    image.delete()
+    return redirect('/showimage')
