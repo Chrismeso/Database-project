@@ -3,15 +3,15 @@ from medicioapp.models import Contact
 from  medicioapp.models import Branch
 from medicioapp.models import Appointment
 from medicioapp.forms import AppointmentForm
-from medicioapp.models import Member
+from medicioapp.models import User
 # Create your views here.
 
 def index(request):
     if request.method == 'POST':
-        if Member.objects.filter(username=request.POST['username'],
+        if User.objects.filter(username=request.POST['username'],
                                  password=request.POST['password']
                                  ).exists():
-            members = Member.objects.get(
+            members = User.objects.get(
                 username=request.POST['username'],
                 password=request.POST['password']
             )
@@ -106,7 +106,7 @@ def update(request, id):
 
 def register(request):
     if request.method == 'POST':
-        members = Member(name=request.POST['name'],
+        members = User(name=request.POST['name'],
                          username=request.POST['username'],
                          password=request.POST['password'],)
         members.save()
