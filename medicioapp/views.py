@@ -5,6 +5,7 @@ from medicioapp.models import Appointment
 from medicioapp.forms import AppointmentForm, ImageUploadForm
 from medicioapp.models import Member
 from medicioapp.models import ImageModel
+
 # Create your views here.
 
 def index(request):
@@ -135,3 +136,5 @@ def imagedelete(request, id):
     image = ImageModel.objects.get(id=id)
     image.delete()
     return redirect('/showimage')
+
+

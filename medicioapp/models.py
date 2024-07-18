@@ -60,8 +60,8 @@ class ImageModel(models.Model):
     def __str__(self):
         return self.title
 class Admin(models.Model):
-      name = models.CharField(max_length=200)
       username = models.CharField(max_length=200)
+      password = models.CharField(max_length=200)
 
       def __str__(self):
           return self.name
